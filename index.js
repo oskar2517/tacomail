@@ -19,6 +19,7 @@ function scheduleForDeletion(directory) {
 
 const smtpServer = new SMTPServer({
     authOptional: true,
+    maxAllowedUnauthenticatedCommands: Infinity,
     async onData(stream, session, callback) {
         try {
             const id = uuidv4();
