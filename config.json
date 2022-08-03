@@ -1,0 +1,14 @@
+{
+    "mailDirectory": "mails",
+    "smtpServer": {
+        "port": 465
+    },
+    "webServer": {
+        "port": 8080
+    },
+    "domains": [
+        "tacomail.de"
+    ],
+    "deletionTimeout": 60,
+    "maxAttachmentSize": 5
+}
