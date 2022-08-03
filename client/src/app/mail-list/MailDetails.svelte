@@ -39,6 +39,7 @@
     }
 
     onMount(() => {
+        mailBodyIFrame.contentWindow.document.write('<base target="_parent">');
         if (mail.body.html !== "") {
             mailBodyIFrame.contentWindow.document.write(
                 sanitizeHtml(mail.body.html)
