@@ -3,9 +3,9 @@
 </script>
 
 <div class="footer">
-    <FooterLink name="Source code" url="mailto:senkju4@gmail.com" />
-    <FooterLink name="API docs" url="mailto:senkju4@gmail.com" />
-    <FooterLink name="Contact" url="mailto:senkju4@gmail.com" />
+    <FooterLink name="Source code" url="https://github.com/oskar2517/tacomail" />
+    <FooterLink name="API docs" url="https://github.com/oskar2517/tacomail/blob/main/docs/API.md" />
+    <FooterLink name="Contact" url="mailto:contact@admin.tacomail.de" />
 </div>
 
 <style>
