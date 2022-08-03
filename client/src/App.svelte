@@ -20,6 +20,8 @@
         availableDomains = await fetch("/api/v1/domains").then((res) =>
             res.json()
         );
+
+        selectedDomain = availableDomains.sample();
     })();
 
     function getSelectedAddress() {
