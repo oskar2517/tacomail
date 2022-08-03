@@ -3,6 +3,7 @@
     import dateFormat from "dateformat";
 
     export let mail;
+    export let unseen;
 
     const dispatch = createEventDispatcher();
 
@@ -12,9 +13,7 @@
 </script>
 
 <div class="mail" on:click={handleClick}>
-    {#if !mail.seen}
-        <div class="unseen" />
-    {/if}
+    <div class="unseen" class:visible={unseen} />
     <div class="sender">
         <div class="sender-name">{mail.from.name}</div>
         <div class="sender-address">{mail.from.address}</div>
@@ -42,6 +41,10 @@
         width: 8px;
         border-radius: 50%;
         align-self: center;
+    }
+
+    .unseen:not(.visible) {
+        opacity: 0;
     }
 
     .sender-address {

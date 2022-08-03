@@ -8,9 +8,11 @@
     export let mails;
 
     let currentMail = null;
+    let seenMails = [];
 
     function handleShowMail(e) {
         currentMail = e.detail;
+        seenMails.push(e.detail.id);
     }
 
     function handleShowList(e) {
@@ -26,7 +28,7 @@
     {:else}
         {#each mails as m, i (m)}
             <div animate:flip in:fade={{ duration: 300 }}>
-                <MailEntry on:showMail={handleShowMail} mail={m} />
+                <MailEntry on:showMail={handleShowMail} mail={m} unseen={!seenMails.includes(m.id)} />
             </div>
         {/each}
     {/if}
