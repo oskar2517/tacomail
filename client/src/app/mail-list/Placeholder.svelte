@@ -5,7 +5,7 @@
 <div class="placeholder">
     <Spinner />
     <div class="title">Your inbox is empty</div>
-    <div class="description">Waiting for incomiming emails</div>
+    <div class="description">Waiting for incoming emails</div>
 </div>
 
 <style>
