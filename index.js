@@ -10,10 +10,16 @@ function log(message) {
     console.log(message);
 }
 
-function scheduleForDeletion(directory) {
+function scheduleForDeletion(addressDirectory, id) {
     setTimeout(async () => {
-        await fs.rm(directory, { recursive: true });
-        log(`[Deletion scheduler] Deleted ${directory}`);
+        const mailDirectory = path.join(addressDirectory, id);
+        const manifestFile = path.join(addressDirectory, "manifest.json");
+        const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
+            .filter(m => m.id !== id);
+        await fs.writeFile(manifestFile, JSON.stringify(manifest));
+
+        await fs.rm(mailDirectory, { recursive: true });
+        log(`[Deletion scheduler] Deleted ${mailDirectory}`);
     }, config.deletionTimeout * 1000 * 60);
 }
 
@@ -91,7 +97,7 @@ const smtpServer = new SMTPServer({
             const mailDataFile = path.join(mailDirectory, "mail.json");
             await fs.writeFile(mailDataFile, JSON.stringify(mailData));
 
-            scheduleForDeletion(mailDirectory);
+            scheduleForDeletion(addressDirectory, id);
         } catch (err) {
             log(err);
         }
