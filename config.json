@@ -1,10 +1,10 @@
 {
     "mailDirectory": "mails",
     "smtpServer": {
-        "port": 465
+        "port": 25
     },
     "webServer": {
-        "port": 8080
+        "port": 80
     },
     "domains": [
         "tacomail.de"
