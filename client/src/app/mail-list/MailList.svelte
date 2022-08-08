@@ -41,6 +41,7 @@
         width: 900px;
         margin: 0 auto;
         overflow-y: auto;
+        resize: vertical;
         border-radius: 5px;
         border: solid 1px rgb(34 36 43 / 16%);
         margin-bottom: 100px;
@@ -48,5 +49,6 @@
         overflow-x: hidden;
         display: flex;
         flex-direction: column;
+        min-height: 200px;
     }
 </style>
