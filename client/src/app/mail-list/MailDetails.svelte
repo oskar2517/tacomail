@@ -13,6 +13,7 @@
 
     function sanitizeHtmlWithConfig(s) {
         return sanitizeHtml(s, {
+            allowedAttributes: false,
             allowedTags: [
                 "a",
                 "b",
