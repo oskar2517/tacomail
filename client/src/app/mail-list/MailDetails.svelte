@@ -11,6 +11,61 @@
 
     const dispatch = createEventDispatcher();
 
+    function sanitizeHtmlWithConfig(s) {
+        return sanitizeHtml(s, {
+            allowedTags: [
+                "a",
+                "b",
+                "br",
+                "big",
+                "blockquote",
+                "caption",
+                "code",
+                "del",
+                "div",
+                "dt",
+                "dd",
+                "font",
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "hr",
+                "i",
+                "img",
+                "ins",
+                "li",
+                "map",
+                "ol",
+                "p",
+                "pre",
+                "s",
+                "small",
+                "strong",
+                "span",
+                "sub",
+                "sup",
+                "table",
+                "tbody",
+                "td",
+                "tfoot",
+                "th",
+                "thead",
+                "tr",
+                "u",
+                "ul",
+                "html",
+                "head",
+                "body",
+                "title",
+                "style",
+                "link",
+            ],
+        });
+    }
+
     function handleGoBackToListClick(e) {
         dispatch("showList");
     }
@@ -42,10 +97,12 @@
         mailBodyIFrame.contentWindow.document.write('<base target="_parent">');
         if (mail.body.html !== "") {
             mailBodyIFrame.contentWindow.document.write(
-                sanitizeHtml(mail.body.html)
+                sanitizeHtmlWithConfig(mail.body.html)
             );
         } else {
-            mailBodyIFrame.contentWindow.document.write(sanitizeHtml(mail.body.text));
+            mailBodyIFrame.contentWindow.document.write(
+                sanitizeHtmlWithConfig(mail.body.text)
+            );
         }
     });
 </script>
