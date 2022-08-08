@@ -5,6 +5,7 @@ import express from "express";
 import path from "path";
 import fs from "fs/promises";
 import config from "./config.json" assert { type: "json" };
+import sanitize from "sanitize-filename";
 
 function log(message) {
     console.log(message);
@@ -37,7 +38,7 @@ const smtpServer = new SMTPServer({
                 throw "Sender address missing";
             }
 
-            const addressDirectory = path.join("mails", path.normalize(toAddress));
+            const addressDirectory = path.join("mails", sanitize(toAddress));
             await fs.mkdir(addressDirectory, { recursive: true });
 
             const manifestFilePath = path.join(addressDirectory, "manifest.json");
@@ -64,7 +65,7 @@ const smtpServer = new SMTPServer({
 
                 const attachmentId = uuidv4();
                 const attachmentName = a.filename;
-                const attachmentPath = path.join(attachmentsDirectory, path.normalize(attachmentName));
+                const attachmentPath = path.join(attachmentsDirectory, sanitize(attachmentName));
 
                 await fs.writeFile(attachmentPath, a.content);
 
@@ -124,7 +125,7 @@ webServer.get("/api/v1/mail/:address", async (req, res) => {
             limit = parseInt(req.query.limit);
         }
 
-        const mailDirectory = path.join(config.mailDirectory, path.normalize(req.params.address));
+        const mailDirectory = path.join(config.mailDirectory, sanitize(req.params.address));
         const manifestFile = path.join(mailDirectory, "manifest.json");
         const manifest = JSON.parse((await fs.readFile(manifestFile)).toString()).slice(0, limit);
 
@@ -143,7 +144,7 @@ webServer.get("/api/v1/mail/:address", async (req, res) => {
 
 webServer.get("/api/v1/mail/:address/:mailId", async (req, res) => {
     try {
-        const mailFile = path.join(config.mailDirectory, path.normalize(req.params.address), path.normalize(req.params.mailId), "mail.json");
+        const mailFile = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId), "mail.json");
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
 
         res.json(mail);
@@ -155,7 +156,7 @@ webServer.get("/api/v1/mail/:address/:mailId", async (req, res) => {
 
 webServer.get("/api/v1/mail/:address/:mailId/attachments", async (req, res) => {
     try {
-        const mailFile = path.join(config.mailDirectory, path.normalize(req.params.address), path.normalize(req.params.mailId), "mail.json");
+        const mailFile = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId), "mail.json");
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
 
         res.json(mail.attachments);
@@ -167,7 +168,7 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments", async (req, res) => {
 
 webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", async (req, res) => {
     try {
-        const mailDirectory = path.join(config.mailDirectory, path.normalize(req.params.address), path.normalize(req.params.mailId));
+        const mailDirectory = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId));
         const mailFile = path.join(mailDirectory, "mail.json");
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
 
@@ -176,7 +177,7 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", async (
             throw "Attachment not found";
         }
 
-        const attachmentFile = path.join(mailDirectory, "attachments", path.normalize(attachment.fileName));
+        const attachmentFile = path.join(mailDirectory, "attachments", sanitize(attachment.fileName));
 
         res.download(attachmentFile);
     } catch (err) {
@@ -187,8 +188,8 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", async (
 
 webServer.delete("/api/v1/mail/:address/:mailId", async (req, res) => {
     try {
-        const addressDirectory = path.join(config.mailDirectory, path.normalize(req.params.address));
-        const mailDirectory = path.join(addressDirectory, path.normalize(req.params.mailId));
+        const addressDirectory = path.join(config.mailDirectory, sanitize(req.params.address));
+        const mailDirectory = path.join(addressDirectory, sanitize(req.params.mailId));
         const manifestFile = path.join(addressDirectory, "manifest.json");
 
         const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
@@ -208,7 +209,7 @@ webServer.delete("/api/v1/mail/:address/:mailId", async (req, res) => {
 
 webServer.delete("/api/v1/mail/:address", async (req, res) => {
     try {
-        const mailDirectory = path.join(config.mailDirectory, path.normalize(req.params.address));
+        const mailDirectory = path.join(config.mailDirectory, sanitize(req.params.address));
 
         await fs.rm(mailDirectory, { recursive: true });
 
