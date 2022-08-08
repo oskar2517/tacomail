@@ -3,7 +3,7 @@
     export let url;
 </script>
 
-<a class="link" href={url}>{name}</a>
+<a class="link" target="_blank" href={url}>{name}</a>
 
 <style>
     .link:visited,
