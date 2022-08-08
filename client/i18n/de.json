@@ -1,0 +1,48 @@
+{
+    "pageDescription": "Mit diesem Dienst kannst du temporäre Email-Adressen erzeugen, die du für die Registrierung auf Websites verwenden kannst, denen du deine echte Email-Adresse nicht anvertrauen möchtest. Dies kann eine betrügerische Nutzung, z. B. durch Spam, verhindern.",
+    "addressSelector": {
+        "usernamePlaceholder": "Nutzername",
+        "copyButtonDescription": "Kopiere die ausgewählte Adresse in die Zwischenablage"
+    },
+    "controlButtons": {
+        "newAddressButton": {
+            "title": "Neue Adresse",
+            "description": "Erzeuge eine neue Adresse"
+        },
+        "refreshButton": {
+            "title": "Aktualisieren",
+            "description": "Überprüfe auf neue Emails"  
+        },
+        "deleteInboxButton": {
+            "title": "Lösche Posteingang",
+            "description": "Löscht alle bisher eingegangenen Emails"
+        }
+    },
+    "mailDetails": {
+        "backToListButton": {
+            "title": "Zurück zur Liste",
+            "description": "Kehre zur Liste empfangener Emails zurück"
+        },
+        "deleteMailButton": {
+            "title": "Löschen",
+            "description": "Lösche diese Email"
+        },
+        "viewMailRawButton": {
+            "title": "Zeige Rohdaten",
+            "description": "Zeige die rohe Antwort der API"  
+        },
+        "subjectTitle": "Betreff",
+        "dateTitle": "Datum",
+        "attachmentsTitle": "Anhänge"
+    },
+    "listPlaceholder": {
+        "title": "Dein Posteingang ist leer",
+        "description": "Warte auf eingehende Emails"
+    },
+    "footer": {
+        "sourceCode": "Quellcode",
+        "APIDocs": "API-Dokumentation",
+        "contact": "Kontakt",
+        "language": "Sprache"
+    }
+}

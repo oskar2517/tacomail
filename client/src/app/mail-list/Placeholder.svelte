@@ -1,11 +1,12 @@
 <script>
     import Spinner from "./Spinner.svelte";
+    import { _ } from "svelte-i18n";
 </script>
 
 <div class="placeholder">
     <Spinner />
-    <div class="title">Your inbox is empty</div>
-    <div class="description">Waiting for incoming emails</div>
+    <div class="title">{$_("listPlaceholder.title")}</div>
+    <div class="description">{$_("listPlaceholder.description")}</div>
 </div>
 
 <style>

@@ -23,6 +23,7 @@
         "deep-equal": "^2.0.5",
         "sanitize-html": "^2.7.1",
         "sirv-cli": "^2.0.0",
+        "svelte-i18n": "^3.4.0",
         "unique-username-generator": "^1.1.1"
     }
 }

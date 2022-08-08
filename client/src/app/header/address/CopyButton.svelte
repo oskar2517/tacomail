@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import { _ } from "svelte-i18n";
 
     const dispatch = createEventDispatcher();
 
@@ -16,7 +17,7 @@
     }
 </script>
 
-<button on:click={handleClick} class="copy-button">
+<button type="button" title={$_("addressSelector.copyButtonDescription")} on:click={handleClick} class="copy-button">
     {#if showTick}
         <i class="fa-solid fa-check fa-fw icon" />
     {:else}

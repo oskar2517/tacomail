@@ -2,6 +2,7 @@
     import { createEventDispatcher } from "svelte";
 
     export let name;
+    export let description;
     export let icon;
     export let animatable;
 
@@ -22,7 +23,7 @@
     }
 </script>
 
-<button class="button" on:click={handleClick}>
+<button class="button" type="button" on:click={handleClick} title={description}>
     <i class="icon fa-solid {icon}" class:animate />
     <div class="name">{name}</div>
 </button>

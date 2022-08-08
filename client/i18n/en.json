@@ -1,0 +1,48 @@
+{
+    "pageDescription": "This service allows you to create temporary email addresses that can be used to register on websites that you do not want to entrust with your true email address. This can prevent fraudulent use such as spam.",
+    "addressSelector": {
+        "usernamePlaceholder": "Username",
+        "copyButtonDescription": "Copy selected email address to clipboard"
+    },
+    "controlButtons": {
+        "newAddressButton": {
+            "title": "New Address",
+            "description": "Generate a new email address"
+        },
+        "refreshButton": {
+            "title": "Refresh",
+            "description": "Manually reload received emails"  
+        },
+        "deleteInboxButton": {
+            "title": "Delete Inbox",
+            "description": "Delete all emails in this inbox"
+        }
+    },
+    "mailDetails": {
+        "backToListButton": {
+            "title": "Back to list",
+            "description": "Return to the list of received emails"
+        },
+        "deleteMailButton": {
+            "title": "Delete",
+            "description": "Delete this email"
+        },
+        "viewMailRawButton": {
+            "title": "View raw",
+            "description": "View raw API response for this email"  
+        },
+        "subjectTitle": "Subject",
+        "dateTitle": "Date",
+        "attachmentsTitle": "Attachments"
+    },
+    "listPlaceholder": {
+        "title": "Your inbox is empty",
+        "description": "Waiting for incoming emails"
+    },
+    "footer": {
+        "sourceCode": "Source code",
+        "APIDocs": "API docs",
+        "contact": "Contact",
+        "language": "Language"
+    }
+}

@@ -1,5 +1,6 @@
 <script>
     import CopyButton from "./CopyButton.svelte";
+    import { _ } from "svelte-i18n";
 
     export let username;
     export let domain;
@@ -15,7 +16,7 @@
         <input
             type="text"
             class="username"
-            placeholder="Username"
+            placeholder={$_("addressSelector.usernamePlaceholder")}
             spellcheck="false"
             bind:value={username}
         />

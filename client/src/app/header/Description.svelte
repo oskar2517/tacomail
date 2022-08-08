@@ -1,6 +1,8 @@
-<div class="description">
-    This service allows you to create temporary email addresses that can be used to register on websites that you do not want to entrust with your true email address. This can prevent fraudulent use such as spam.
-</div>
+<script>
+    import { _ } from "svelte-i18n";
+</script>
+
+<div class="description">{$_("pageDescription")}</div>
 
 <style>
     .description {

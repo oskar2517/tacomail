@@ -4,6 +4,7 @@
     import dateFormat from "dateformat";
     import sanitizeHtml from "sanitize-html";
     import { onMount } from "svelte";
+    import { _ } from "svelte-i18n";
 
     export let mail;
 
@@ -110,15 +111,15 @@
 
 <div class="mail" in:fade={{ duration: 300 }}>
     <div class="action-button-row">
-        <button class="action-button" on:click={handleGoBackToListClick}>
-            <i class="fa-solid fa-angle-left" /> Back to list
+        <button type="button" class="action-button" on:click={handleGoBackToListClick} title={$_("mailDetails.backToListButton.description")}>
+            <i class="fa-solid fa-angle-left" /> {$_("mailDetails.backToListButton.title")}
         </button>
         <div class="action-button-row-spacer" />
-        <button class="action-button" on:click={handleDeleteClick}>
-            <i class="fa-solid fa-trash-can" /> Delete
+        <button type="button" class="action-button" on:click={handleDeleteClick} title={$_("mailDetails.deleteMailButton.description")}>
+            <i class="fa-solid fa-trash-can" /> {$_("mailDetails.deleteMailButton.title")}
         </button>
-        <button class="action-button" on:click={handleViewRawClick}>
-            <i class="fa-solid fa-code" /> View raw
+        <button type="button" class="action-button" on:click={handleViewRawClick} title={$_("mailDetails.viewMailRawButton.description")}>
+            <i class="fa-solid fa-code" /> {$_("mailDetails.viewMailRawButton.title")}
         </button>
     </div>
     <div class="mail-info">
@@ -134,7 +135,7 @@
             </div>
 
             <div class="date">
-                <div class="generic-info-title">Date</div>
+                <div class="generic-info-title">{$_("mailDetails.dateTitle")}</div>
                 <div class="generic-info-value">
                     {dateFormat(
                         Date.parse(mail.date),
@@ -145,13 +146,13 @@
         </div>
 
         <div class="generic-info">
-            <div class="generic-info-title">Subject:</div>
+            <div class="generic-info-title">{$_("mailDetails.subjectTitle")}:</div>
             <div class="generic-info-value">{mail.subject}</div>
         </div>
 
         {#if mail.attachments.length > 0}
             <div class="generic-info">
-                <div class="generic-info-title">Attachments:</div>
+                <div class="generic-info-title">{$_("mailDetails.attachmentsTitle")}:</div>
                 <div class="generic-info-value">
                     {#each mail.attachments as a}
                         <a

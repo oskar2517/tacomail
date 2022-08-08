@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import { _ } from "svelte-i18n";
 
     import ControlButton from "./ControlButton.svelte";
 
@@ -27,21 +28,24 @@
 
 <div class="control-button-row">
     <ControlButton
-        name="New Address"
+        name={$_("controlButtons.newAddressButton.title")}
+        description={$_("controlButtons.newAddressButton.description")}
         icon="fa-arrow-rotate-right"
         animatable={true}
         on:click={handleNewAddressClick}
     />
     <div bind:this={refreshButton}>
         <ControlButton
-            name="Refresh"
+            name={$_("controlButtons.refreshButton.title")}
+            description={$_("controlButtons.refreshButton.description")}
             icon="fa-arrows-rotate"
             animatable={true}
             on:click={handleRefreshClick}
         />
     </div>
     <ControlButton
-        name="Delete Inbox"
+        name={$_("controlButtons.deleteInboxButton.title")}
+        description={$_("controlButtons.deleteInboxButton.description")}
         icon="fa-trash-can"
         animatable={false}
         on:click={handleInboxDeleteClick}
