@@ -84,7 +84,7 @@
     }
 
     function hashAuthor(address) {
-        const avatarCount = 7;
+        const avatarCount = 16;
         const index =
             address
                 .split("")
