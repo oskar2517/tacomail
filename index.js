@@ -90,7 +90,7 @@ const smtpServer = new SMTPServer({
                 subject: parsedEmail.subject,
                 date: parsedEmail.date,
                 body: {
-                    text: parsedEmail.text,
+                    text: parsedEmail.text || "",
                     html: parsedEmail.html || ""
                 },
                 headers: parsedEmail.headers,
