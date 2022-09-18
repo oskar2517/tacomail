@@ -13,15 +13,23 @@ function log(message) {
 
 function scheduleForDeletion(addressDirectory, id) {
     setTimeout(async () => {
-        const mailDirectory = path.join(addressDirectory, id);
-        const manifestFile = path.join(addressDirectory, "manifest.json");
-        const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
-            .filter(m => m.id !== id);
-        await fs.writeFile(manifestFile, JSON.stringify(manifest));
-
-        await fs.rm(mailDirectory, { recursive: true });
-        log(`[Deletion scheduler] Deleted ${mailDirectory}`);
-    }, config.deletionTimeout * 1000 * 60);
+        try {
+            const mailDirectory = path.join(addressDirectory, id);
+            const manifestFile = path.join(addressDirectory, "manifest.json");
+            const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
+                .filter(m => m.id !== id);
+            await fs.writeFile(manifestFile, JSON.stringify(manifest));
+    
+            if (manifest.length == 0) {
+                await fs.rm(addressDirectory, { recursive: true });
+            } else {
+                await fs.rm(mailDirectory, { recursive: true });
+            }
+            log(`[Deletion scheduler] Deleted ${mailDirectory}`);
+        } catch (err) {
+            console.log(`[Deletion scheduler] Failed to delete mail '${addressDirectory}'. Has is already been deleted?`);
+        }
+    }, 30 * 1000);
 }
 
 const smtpServer = new SMTPServer({
