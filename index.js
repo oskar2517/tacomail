@@ -29,7 +29,7 @@ function scheduleForDeletion(addressDirectory, id) {
         } catch (err) {
             console.log(`[Deletion scheduler] Failed to delete mail '${addressDirectory}'. Has is already been deleted?`);
         }
-    }, 30 * 1000);
+    }, config.deletionTimeout * 1000 * 60);
 }
 
 const smtpServer = new SMTPServer({
