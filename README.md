@@ -3,6 +3,13 @@ This service allows you to create temporary email addresses that can be used to 
 
 The live version can be found at [https://tacomail.de](https://tacomail.de).
 
+## Features
+- Anonymously receive emails.
+- HTML emails are displayed correctly without compromising security.
+- Email attachments can be downloaded.
+- All emails will be deleted after 1 hour.
+- Simple API that can be integrated into other projects. Checkout [API.md](docs/API.md) for more information.
+
 ## Setup
 1. Clone this repository using `git clone https://github.com/oskar2517/tacomail`
 2. Navigate into the newly created directory using `cd tacomail`
