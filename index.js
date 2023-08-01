@@ -6,6 +6,7 @@ import path from "path";
 import fs from "fs/promises";
 import config from "./config.json" assert { type: "json" };
 import sanitize from "sanitize-filename";
+import {pathExists} from "path-exists";
 
 function log(message) {
     console.log(message);
@@ -19,7 +20,7 @@ function scheduleForDeletion(addressDirectory, id) {
             const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
                 .filter(m => m.id !== id);
             await fs.writeFile(manifestFile, JSON.stringify(manifest));
-    
+
             if (manifest.length == 0) {
                 await fs.rm(addressDirectory, { recursive: true });
             } else {
@@ -80,7 +81,7 @@ const smtpServer = new SMTPServer({
 
                 savedAttachmentsSize += a.size;
                 if (savedAttachmentsSize <= config.maxAttachmentsSize * 1_000_000) {
-                    const attachmentPath = path.join(attachmentsDirectory, sanitize(attachmentName));
+                    const attachmentPath = path.join(attachmentsDirectory, attachmentId);
 
                     await fs.writeFile(attachmentPath, a.content);
                     attachment.present = true;
@@ -99,7 +100,7 @@ const smtpServer = new SMTPServer({
                 },
                 to: {
                     address: parsedEmail.to?.value?.[0].address,
-                    name:  parsedEmail.to?.value?.[0].name
+                    name: parsedEmail.to?.value?.[0].name
                 },
                 subject: parsedEmail.subject,
                 date: parsedEmail.date,
@@ -193,9 +194,13 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", async (
             throw "Attachment not found";
         }
 
-        const attachmentFile = path.join(mailDirectory, "attachments", sanitize(attachment.fileName));
+        const attachmentFile = path.join(mailDirectory, "attachments", attachment.id);
 
-        res.download(attachmentFile);
+        if (!(await pathExists(attachmentFile))) {
+            throw "Attachment not found";
+        }
+
+        res.download(attachmentFile, attachment.fileName);
     } catch (err) {
         res.status(404);
         res.end();
@@ -211,7 +216,7 @@ webServer.delete("/api/v1/mail/:address/:mailId", async (req, res) => {
         const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
             .filter(m => m.id !== req.params.mailId);
         await fs.writeFile(manifestFile, JSON.stringify(manifest));
-        
+
         await fs.rm(mailDirectory, { recursive: true });
 
         res.sendStatus(204);
