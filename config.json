@@ -9,6 +9,12 @@
     "domains": [
         "tacomail.de"
     ],
-    "deletionTimeout": 60,
-    "maxAttachmentsSize": 10
+    "limitations": {
+        "maxAttachmentsSize": 10,
+        "maxBodyChars": 50000,
+        "maxTitleChars": 1000,
+        "maxOthersChars": 250
+
+    },
+    "deletionTimeout": 60
 }

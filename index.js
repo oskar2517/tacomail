@@ -96,7 +96,7 @@ const smtpServer = new SMTPServer({
                 };
 
                 savedAttachmentsSize += a.size;
-                if (savedAttachmentsSize <= config.maxAttachmentsSize * 1_000_000) {
+                if (savedAttachmentsSize <= config.limitations.maxAttachmentsSize * 1_000_000) {
                     const attachmentPath = path.join(attachmentsDirectory, attachmentId);
 
                     await fs.writeFile(attachmentPath, a.content);
@@ -111,20 +111,25 @@ const smtpServer = new SMTPServer({
             const mailData = {
                 id,
                 from: {
-                    address: parsedEmail.from?.value?.[0]?.address,
-                    name: parsedEmail.from?.value?.[0].name
+                    address: parsedEmail.from?.value?.[0]?.address?.substring(0, config.limitations.maxOthersChars),
+                    name: parsedEmail.from?.value?.[0].name?.substring(0, config.limitations.maxOthersChars)
                 },
                 to: {
-                    address: parsedEmail.to?.value?.[0].address,
-                    name: parsedEmail.to?.value?.[0].name
+                    address: parsedEmail.to?.value?.[0].address?.substring(0, config.limitations.maxOthersChars),
+                    name: parsedEmail.to?.value?.[0].name?.substring(0, config.limitations.maxOthersChars)
                 },
-                subject: parsedEmail.subject,
-                date: parsedEmail.date,
+                subject: parsedEmail.subject?.substring(0, config.limitations.maxTitleChars),
+                date: parsedEmail.date?.toISOString().substring(0, config.limitations.maxOthersChars),
                 body: {
-                    text: parsedEmail.text || "",
-                    html: parsedEmail.html || ""
+                    text: parsedEmail.text?.substring(0, config.limitations.maxBodyChars) || "",
+                    html: parsedEmail.html ? parsedEmail.html.substring(0, config.limitations.maxBodyChars) : ""
                 },
-                headers: parsedEmail.headers,
+                headers: new Map(
+                    Array.from(parsedEmail.headers, ([key, value]) => [
+                        key.substring(0, config.limitations.maxOthersChars),
+                        value.toString().substring(0, config.limitations.maxOthersChars)
+                    ])
+                ),
                 attachments
             }
 
