@@ -9,11 +9,24 @@
     async function handleAddressCopy(e) {
         await navigator.clipboard.writeText(`${username}@${domain}`);
     }
+
+    function handleEmailPaste(e) {
+        let text = (event.clipboardData || window.clipboardData).getData("text");
+
+        if (text.includes("@")) {
+            e.preventDefault();
+            [username, domain] = text.split("@");
+            if (!availableDomains.includes(domain)) {
+                availableDomains = [domain, ...availableDomains];
+            }
+        }
+    }
 </script>
 
 <div class="address-selector-wrapper">
     <div class="address-selector">
         <input
+            on:paste={handleEmailPaste}
             type="text"
             class="username"
             placeholder={$_("addressSelector.usernamePlaceholder")}
