@@ -152,7 +152,7 @@ webServer.get("/api/v1/domains", (req, res) => {
 webServer.get("/api/v1/mail/:address", async (req, res) => {
     try {
         let limit = 10;
-        if (req.query.limit && !isNaN(parseInt(req.query.limit)) && parseInt(limit) <= 10) {
+        if (req.query.limit && !isNaN(parseInt(req.query.limit)) && parseInt(req.query.limit) <= 10) {
             limit = parseInt(req.query.limit);
         }
 
