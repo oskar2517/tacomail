@@ -32,14 +32,6 @@ function scheduleForDeletion(addressDirectory, id) {
     }, config.deletionTimeout * 1000 * 60);
 }
 
-const stats = {
-    receivedEmails: 0
-};
-
-setInterval(() => {
-    stats.receivedEmails = 0;
-}, 1000 * 60 * 60 * 24);
-
 const smtpServer = new SMTPServer({
     authOptional: true,
     maxAllowedUnauthenticatedCommands: Infinity,
@@ -123,8 +115,6 @@ const smtpServer = new SMTPServer({
             await fs.writeFile(mailDataFile, JSON.stringify(mailData));
 
             scheduleForDeletion(addressDirectory, id);
-
-            stats.receivedEmails++;
         } catch (err) {
             log(err);
         }
@@ -142,10 +132,6 @@ webServer.use(express.static("client/public"));
 
 webServer.get("/api/v1/domains", (req, res) => {
     res.json(config.domains);
-});
-
-webServer.get("/api/v1/stats", (req, res) => {
-    res.json(stats);
 });
 
 webServer.get("/api/v1/mail/:address", async (req, res) => {
