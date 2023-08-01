@@ -234,9 +234,13 @@ webServer.delete("/api/v1/mail/:address/:mailId", async (req, res) => {
 
         const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
             .filter(m => m.id !== req.params.mailId);
-        await fs.writeFile(manifestFile, JSON.stringify(manifest));
 
-        await fs.rm(mailDirectory, { recursive: true });
+        if (manifest.length === 0) {
+            await fs.rm(addressDirectory, { recursive: true });
+        } else {
+            await fs.writeFile(manifestFile, JSON.stringify(manifest));
+            await fs.rm(mailDirectory, { recursive: true });
+        }
 
         res.sendStatus(204);
         res.end();
