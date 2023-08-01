@@ -4,8 +4,15 @@
     import MailEntry from "./MailEntry.svelte";
     import Placeholder from "./Placeholder.svelte";
     import MailDetails from "./MailDetails.svelte";
+    import { afterUpdate } from "svelte";
 
     export let mails;
+
+    afterUpdate(() => {
+        if (mails.length === 0) {
+            currentMail = null;
+        }
+    });
 
     let currentMail = null;
     let seenMails = [];
