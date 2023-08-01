@@ -33,7 +33,8 @@
         },
         "subjectTitle": "Subject",
         "dateTitle": "Date",
-        "attachmentsTitle": "Attachments"
+        "attachmentsTitle": "Attachments",
+        "attachmentUnavailable": "Attachment unavailable"
     },
     "listPlaceholder": {
         "title": "Your inbox is empty",

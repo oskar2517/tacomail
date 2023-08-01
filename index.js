@@ -76,21 +76,27 @@ const smtpServer = new SMTPServer({
             await fs.mkdir(attachmentsDirectory);
 
             const attachments = [];
+            let savedAttachmentsSize = 0;
             for (const a of parsedEmail.attachments) {
-                if (a.size > (config.maxAttachmentSize * 1000000)) {
-                    continue;
-                }
-
                 const attachmentId = uuidv4();
                 const attachmentName = a.filename;
-                const attachmentPath = path.join(attachmentsDirectory, sanitize(attachmentName));
 
-                await fs.writeFile(attachmentPath, a.content);
-
-                attachments.push({
+                const attachment = {
                     id: attachmentId,
                     fileName: attachmentName
-                });
+                };
+
+                savedAttachmentsSize += a.size;
+                if (savedAttachmentsSize <= config.maxAttachmentsSize * 1_000_000) {
+                    const attachmentPath = path.join(attachmentsDirectory, sanitize(attachmentName));
+
+                    await fs.writeFile(attachmentPath, a.content);
+                    attachment.present = true;
+                } else {
+                    attachment.present = false;
+                }
+
+                attachments.push(attachment);
             }
 
             const mailData = {
@@ -197,7 +203,7 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", async (
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
 
         const attachment = mail.attachments.find(a => a.id === req.params.attachmentId);
-        if (!attachment) {
+        if (!attachment || !attachment.present) {
             throw "Attachment not found";
         }
 

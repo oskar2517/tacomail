@@ -156,10 +156,11 @@
                 <div class="generic-info-value">
                     {#each mail.attachments as a}
                         <a
+                            title={!a.present ? $_("mailDetails.attachmentUnavailable") : null }
+                            class:present={a.present}
                             class="attachment-url"
                             target="_blank"
-                            href="/api/v1/mail/{mail.to
-                                .address}/{mail.id}/attachments/{a.id}"
+                            href={a.present ? `/api/v1/mail/${mail.to.address}/${mail.id}/attachments/${a.id}` : null }
                         >
                             {a.fileName}
                         </a>
@@ -186,6 +187,10 @@
 
     .attachment-url:last-of-type:after {
         content: "";
+    }
+
+    .attachment-url:not(.present) {
+        opacity: .5;
     }
 
     .mail-body {

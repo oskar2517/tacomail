@@ -33,7 +33,8 @@
         },
         "subjectTitle": "Betreff",
         "dateTitle": "Datum",
-        "attachmentsTitle": "Anhänge"
+        "attachmentsTitle": "Anhänge",
+        "attachmentUnavailable": "Anhang nicht verfügbar"
     },
     "listPlaceholder": {
         "title": "Dein Posteingang ist leer",

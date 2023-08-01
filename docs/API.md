@@ -46,7 +46,8 @@ Expected status: 200
         "attachments": [
             {
                 "id": "a28c488f-73aa-4b07-9d62-424f882354a8",
-                "fileName": "logo.png"
+                "fileName": "logo.png",
+                "present": true
             }
         ]
     }
@@ -60,38 +61,37 @@ GET /api/v1/mail/:address/:mailId
 ```
 Expected status: 200
 
-### Example respponse
+### Example response
 ```json
-[
-    {
-        "id": "97d5b620-b607-41c2-a10f-fad14901dc59",
-        "from": {
-            "address": "georg@outsider.com",
-            "name": ""
-        },
-        "to": {
-            "address": "poolforgiving@tacomail.de",
-            "name": ""
-        },
-        "subject": "This is the subject",
-        "date": "2022-08-03T14:16:51.000Z",
-        "body": {
-            "text": "This is an example body",
-            "html": ""
-        },
-        "headers": {},
-        "attachments": [
-            {
-                "id": "a28c488f-73aa-4b07-9d62-424f882354a8",
-                "fileName": "logo.png"
-            }
-        ]
-    }
-]
+{
+    "id": "97d5b620-b607-41c2-a10f-fad14901dc59",
+    "from": {
+        "address": "georg@outsider.com",
+        "name": ""
+    },
+    "to": {
+        "address": "poolforgiving@tacomail.de",
+        "name": ""
+    },
+    "subject": "This is the subject",
+    "date": "2022-08-03T14:16:51.000Z",
+    "body": {
+        "text": "This is an example body",
+        "html": ""
+    },
+    "headers": {},
+    "attachments": [
+        {
+            "id": "a28c488f-73aa-4b07-9d62-424f882354a8",
+            "fileName": "logo.png",
+            "present": true
+        }
+    ]
+}
 ```
 
 ## Fetching attachments
-Returns with the ID and name of all attachments of a mail.
+Returns with the ID and name of all attachments of a mail. The `present` field indicates whether the attachment can be downloaded. Attachments will only be saved until their total sizes exceeds the configured `maxAttachmentsSize`.
 ```
 GET /api/v1/mail/:address/:mailId/attachments
 ```
@@ -102,13 +102,14 @@ Expected status: 200
 [
     {
         "id": "a28c488f-73aa-4b07-9d62-424f882354a8",
-        "fileName": "logo.png"
+        "fileName": "logo.png",
+        "present": true
     }
 ]
 ```
 
 ## Download an attachment
-Downloads a single attachment of a mail.
+Downloads a single attachment of a mail. Make sure the `present` field is set to `true`.
 ```
 GET /api/v1/mail/:address/:mailId/attachments/:attachmentId
 ```
