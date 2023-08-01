@@ -6,32 +6,48 @@ import path from "path";
 import fs from "fs/promises";
 import config from "./config.json" assert { type: "json" };
 import sanitize from "sanitize-filename";
-import {pathExists} from "path-exists";
+import { pathExists } from "path-exists";
 
 function log(message) {
     console.log(message);
 }
 
-function scheduleForDeletion(addressDirectory, id) {
-    setTimeout(async () => {
-        try {
-            const mailDirectory = path.join(addressDirectory, id);
-            const manifestFile = path.join(addressDirectory, "manifest.json");
-            const manifest = JSON.parse((await fs.readFile(manifestFile)).toString())
-                .filter(m => m.id !== id);
-            await fs.writeFile(manifestFile, JSON.stringify(manifest));
+function timestampToMinutes(timestamp) {
+    return timestamp / 1000 / 60;
+}
 
-            if (manifest.length == 0) {
+setInterval(async () => {
+    try {
+        const currentTime = timestampToMinutes(Date.now());
+        const addressDirectories = await fs.readdir(config.mailDirectory);
+
+        for (const address of addressDirectories) {
+            const addressDirectory = path.join(config.mailDirectory, address);
+            const manifestFile = path.join(addressDirectory, "manifest.json");
+            const manifest = JSON.parse((await fs.readFile(manifestFile)).toString());
+
+            const newManifest = [];
+            for (const storedMail of manifest) {
+                if (currentTime - timestampToMinutes(storedMail.timestamp) < config.deletionTimeout) {
+                    newManifest.push(storedMail);
+                    continue;
+                }
+
+                const storedMailDirectory = path.join(addressDirectory, storedMail.id);
+
+                await fs.rm(storedMailDirectory, { recursive: true });
+            }
+
+            if (newManifest.length === 0) {
                 await fs.rm(addressDirectory, { recursive: true });
             } else {
-                await fs.rm(mailDirectory, { recursive: true });
+                await fs.writeFile(manifestFile, JSON.stringify(newManifest));
             }
-            log(`[Deletion scheduler] Deleted ${mailDirectory}`);
-        } catch (err) {
-            console.log(`[Deletion scheduler] Failed to delete mail '${addressDirectory}'. Has is already been deleted?`);
         }
-    }, config.deletionTimeout * 1000 * 60);
-}
+    } catch (err) {
+        log(err);
+    }
+}, 30 * 1000);
 
 const smtpServer = new SMTPServer({
     authOptional: true,
@@ -59,7 +75,7 @@ const smtpServer = new SMTPServer({
             } catch (err) {
                 manifest = [];
             }
-            manifest.unshift({ id });
+            manifest.unshift({ id, timestamp: Date.now() });
             await fs.writeFile(manifestFilePath, JSON.stringify(manifest));
 
             const mailDirectory = path.join(addressDirectory, id);
@@ -114,8 +130,6 @@ const smtpServer = new SMTPServer({
 
             const mailDataFile = path.join(mailDirectory, "mail.json");
             await fs.writeFile(mailDataFile, JSON.stringify(mailData));
-
-            scheduleForDeletion(addressDirectory, id);
         } catch (err) {
             log(err);
         }
