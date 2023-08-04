@@ -16,5 +16,6 @@
         "maxOthersChars": 250
 
     },
-    "deletionTimeout": 60
+    "deletionTimeout": 60,
+    "contactEmail": "contact@admin.tacomail.de"
 }

@@ -5,6 +5,7 @@
     import MailList from "./app/mail-list/MailList.svelte";
     import { generateUsername } from "unique-username-generator";
     import equal from "deep-equal";
+    import { onMount } from "svelte";
 
     Array.prototype.sample = function () {
         return this[Math.floor(Math.random() * this.length)];
@@ -15,14 +16,15 @@
     let selectedDomain;
     let selectedUsername = generateUsername();
     let availableDomains = [];
-    (async function () {
+
+    onMount(async () => {
         availableDomains = await fetch("/api/v1/domains").then((res) =>
             res.json()
         );
 
         selectedDomain = availableDomains.sample();
-    })();
-
+    });
+    
     function getSelectedAddress() {
         return `${selectedUsername}@${selectedDomain}`;
     }
