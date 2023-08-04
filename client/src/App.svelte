@@ -5,6 +5,7 @@
     import MailList from "./app/mail-list/MailList.svelte";
     import equal from "deep-equal";
     import { onMount } from "svelte";
+    import { getDomains, getRandomUsername, getInbox, deleteInbox } from "./api";
 
     Array.prototype.sample = function () {
         return this[Math.floor(Math.random() * this.length)];
@@ -17,13 +18,10 @@
     let availableDomains = [];
 
     onMount(async () => {
-        availableDomains = await fetch("/api/v1/domains").then((res) => res.json());
-
+        availableDomains = await getDomains();
         selectedDomain = availableDomains.sample();
 
-        selectedUsername = await fetch("/api/v1/randomUsername")
-            .then((res) => res.json())
-            .then((res) => res.username);
+        selectedUsername = (await getRandomUsername()).username
     });
 
     function getSelectedAddress() {
@@ -31,7 +29,7 @@
     }
 
     async function handleRefreshClick(e) {
-        const result = await fetch(`/api/v1/mail/${getSelectedAddress()}`).then((res) => res.json());
+        const result = await getInbox(getSelectedAddress());
 
         if (!equal(result, mails)) {
             mails = result;
@@ -39,9 +37,7 @@
     }
 
     async function handleInboxDeleteClick(e) {
-        await fetch(`/api/v1/mail/${getSelectedAddress()}`, {
-            method: "DELETE",
-        });
+        await deleteInbox(getSelectedAddress());
         mails = [];
     }
 

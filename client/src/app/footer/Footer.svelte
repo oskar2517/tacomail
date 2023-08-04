@@ -3,14 +3,12 @@
     import { _ } from "svelte-i18n";
     import LanguageSelector from "./LanguageSelector.svelte";
     import { onMount } from "svelte";
+    import { getContactEmail } from "../../api";
 
     let contactEmail;
 
     onMount(async () => {
-        const response = await fetch(`/api/v1/contactEmail`);
-        const parsedResponse = await response.json();
-
-        contactEmail = parsedResponse.email;
+        contactEmail = (await getContactEmail()).email;
     });
 </script>
 

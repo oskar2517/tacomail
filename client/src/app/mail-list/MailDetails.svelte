@@ -5,6 +5,7 @@
     import sanitizeHtml from "sanitize-html";
     import { onMount } from "svelte";
     import { _ } from "svelte-i18n";
+    import { deleteMail } from "../../api";
 
     export let mail;
 
@@ -73,9 +74,7 @@
     }
 
     async function handleDeleteClick(e) {
-        await fetch(`/api/v1/mail/${mail.to.address}/${mail.id}`, {
-            method: "DELETE",
-        });
+        await deleteMail(mail.to.address, mail.id);
         dispatch("removeMail", mail);
         handleGoBackToListClick();
     }
