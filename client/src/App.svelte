@@ -3,7 +3,6 @@
     import Footer from "./app/footer/Footer.svelte";
     import Header from "./app/header/Header.svelte";
     import MailList from "./app/mail-list/MailList.svelte";
-    import { generateUsername } from "unique-username-generator";
     import equal from "deep-equal";
     import { onMount } from "svelte";
 
@@ -13,26 +12,26 @@
 
     let mails = [];
 
-    let selectedDomain;
-    let selectedUsername = generateUsername();
+    let selectedDomain = "";
+    let selectedUsername = "";
     let availableDomains = [];
 
     onMount(async () => {
-        availableDomains = await fetch("/api/v1/domains").then((res) =>
-            res.json()
-        );
+        availableDomains = await fetch("/api/v1/domains").then((res) => res.json());
 
         selectedDomain = availableDomains.sample();
+
+        selectedUsername = await fetch("/api/v1/randomUsername")
+            .then((res) => res.json())
+            .then((res) => res.username);
     });
-    
+
     function getSelectedAddress() {
         return `${selectedUsername}@${selectedDomain}`;
     }
 
     async function handleRefreshClick(e) {
-        const result = await fetch(`/api/v1/mail/${getSelectedAddress()}`).then(
-            (res) => res.json()
-        );
+        const result = await fetch(`/api/v1/mail/${getSelectedAddress()}`).then((res) => res.json());
 
         if (!equal(result, mails)) {
             mails = result;
@@ -58,16 +57,8 @@
 </script>
 
 <main>
-    <Header
-        bind:username={selectedUsername}
-        bind:domain={selectedDomain}
-        {availableDomains}
-    />
-    <ControlButtonRow
-        on:refreshClick={handleRefreshClick}
-        on:inboxDeleteClick={handleInboxDeleteClick}
-        on:newAddressClick={handleNewAddressClick}
-    />
+    <Header bind:username={selectedUsername} bind:domain={selectedDomain} {availableDomains} />
+    <ControlButtonRow on:refreshClick={handleRefreshClick} on:inboxDeleteClick={handleInboxDeleteClick} on:newAddressClick={handleNewAddressClick} />
     <MailList {mails} on:removeMail={handleRemoveMail} />
     <Footer />
 </main>

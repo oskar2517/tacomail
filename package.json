@@ -15,6 +15,7 @@
         "path-exists": "^5.0.0",
         "sanitize-filename": "^1.6.3",
         "smtp-server": "^3.11.0",
+        "unique-username-generator": "^1.2.0",
         "uuid": "^8.3.2"
     }
 }

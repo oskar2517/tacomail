@@ -7,6 +7,7 @@ import fs from "fs/promises";
 import config from "./config.json" assert { type: "json" };
 import sanitize from "sanitize-filename";
 import { pathExists } from "path-exists";
+import { generateUsername } from "unique-username-generator";
 
 function log(message) {
     console.log(message);
@@ -149,6 +150,16 @@ smtpServer.listen(config.smtpServer.port, () => {
 
 const webServer = express();
 webServer.use(express.static("client/public"));
+
+webServer.get("/api/v1/contactEmail", (req, res) => {
+    res.json({ email: config.contactEmail });
+});
+
+webServer.get("/api/v1/randomUsername", (req, res) => {
+    const username = generateUsername("", 5, 20);
+
+    res.json({ username });
+});
 
 webServer.get("/api/v1/domains", (req, res) => {
     res.json(config.domains);
