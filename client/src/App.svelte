@@ -4,7 +4,6 @@
     import Header from "./app/header/Header.svelte";
     import MailList from "./app/mail-list/MailList.svelte";
     import { generateUsername } from "unique-username-generator";
-    
     import equal from "deep-equal";
 
     Array.prototype.sample = function () {
@@ -13,7 +12,7 @@
 
     let mails = [];
 
-    let selectedDomain = "tacomail.de";
+    let selectedDomain;
     let selectedUsername = generateUsername();
     let availableDomains = [];
     (async function () {
