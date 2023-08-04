@@ -85,13 +85,14 @@
 
     function hashAuthor(address) {
         const avatarCount = 16;
-        const index =
-            address
-                .split("")
-                .reduce((p, c) => p + (c.charCodeAt(0) % avatarCount), 0) %
-            avatarCount;
+        const prime = 13;
 
-        return index;
+        const hash = address.split("").reduce((acc, char) => {
+            const charCode = char.charCodeAt(0);
+            return (acc * prime + charCode) % avatarCount;
+        }, 0);
+
+        return hash;
     }
 
     onMount(() => {
