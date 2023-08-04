@@ -1,6 +1,32 @@
 # TacoMail API
 TacoMail provides an API which may be incorporated by third-party developers. This document describes the available routes. All mails will be automatically deleted after one hour.
 
+## Fetching the contact email address
+Returns the contact email address of this instance.
+```
+GET /api/v1/contactEmail
+```
+
+### Example response
+```json
+{
+    "email": "contact@admin.tacomail.de"
+}
+```
+
+## Fetching a random username
+Returns a random username.
+```
+GET /api/v1/randomUsername
+```
+
+### Example response
+```json
+{
+    "username": "unpreparedace69117"
+}
+```
+
 ## Fetching all available domains
 Returns an array of available domains.
 ```
