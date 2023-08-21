@@ -58,4 +58,10 @@
         flex-direction: column;
         min-height: 200px;
     }
+
+    @media screen and (max-width: 500px) {
+        .mail-list {
+            margin-bottom: 50px;
+        }
+    }
 </style>

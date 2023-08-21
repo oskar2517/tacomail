@@ -44,6 +44,7 @@
         "sourceCode": "Source code",
         "APIDocs": "API docs",
         "contact": "Contact",
-        "language": "Language"
+        "language": "Language",
+        "tos": "TOS"
     }
 }

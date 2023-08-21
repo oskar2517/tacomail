@@ -15,6 +15,7 @@
 <div class="footer">
     <FooterLink name={$_("footer.sourceCode")} url="https://github.com/oskar2517/tacomail" />
     <FooterLink name={$_("footer.APIDocs")} url="https://github.com/oskar2517/tacomail/blob/main/docs/API.md" />
+    <FooterLink name={$_("footer.tos")} url="tos.txt" />
     <FooterLink name={$_("footer.contact")} url="mailto:{contactEmail}" />
     <LanguageSelector />
 </div>
@@ -25,5 +26,13 @@
         justify-content: center;
         column-gap: 20px;
         margin-bottom: 50px;
+    }
+
+    
+    @media screen and (max-width: 500px) {
+        .footer {
+            flex-direction: column;
+            text-align: center;
+        }
     }
 </style>
