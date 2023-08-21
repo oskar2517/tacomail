@@ -15,11 +15,12 @@ The live version can be found at [https://tacomail.de](https://tacomail.de).
 2. Navigate into the newly created directory using `cd tacomail`
 3. Install the dependencies required by the server using `npm install`
 4. Navigate into the client directory using `cd client`
-5. Install the dependencies required by the client using `npm install`
-6. Build the client using `npm run build`
-7. Return to the root directory using `cd ..`
-8. Rename `.config.json` to `config.json` and configure to your needs
-9. Launch the sever using `node .`
+5. Modify `public/tos.txt` to your needs
+6. Install the dependencies required by the client using `npm install`
+7. Build the client using `npm run build`
+8. Return to the root directory using `cd ..`
+9. Rename `.config.json` to `config.json` and configure to your needs
+10. Launch the sever using `node .`
 
 ## Screenshots
 ![Screenshot 1](assets/screenshot_1.png)
