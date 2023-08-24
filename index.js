@@ -8,6 +8,7 @@ import config from "./config.json" assert { type: "json" };
 import sanitize from "sanitize-filename";
 import { pathExists } from "path-exists";
 import { generateUsername } from "unique-username-generator";
+import cors from "cors";
 
 function log(message) {
     console.log(message);
@@ -151,21 +152,21 @@ smtpServer.listen(config.smtpServer.port, () => {
 const webServer = express();
 webServer.use(express.static("client/public"));
 
-webServer.get("/api/v1/contactEmail", (req, res) => {
+webServer.get("/api/v1/contactEmail", cors(), (req, res) => {
     res.json({ email: config.contactEmail });
 });
 
-webServer.get("/api/v1/randomUsername", (req, res) => {
+webServer.get("/api/v1/randomUsername", cors(), (req, res) => {
     const username = generateUsername("", 5, 20);
 
     res.json({ username });
 });
 
-webServer.get("/api/v1/domains", (req, res) => {
+webServer.get("/api/v1/domains", cors(), (req, res) => {
     res.json(config.domains);
 });
 
-webServer.get("/api/v1/mail/:address", async (req, res) => {
+webServer.get("/api/v1/mail/:address", cors(), async (req, res) => {
     try {
         let limit = 10;
         if (req.query.limit && !isNaN(parseInt(req.query.limit)) && parseInt(req.query.limit) <= 10) {
@@ -189,7 +190,7 @@ webServer.get("/api/v1/mail/:address", async (req, res) => {
     }
 });
 
-webServer.get("/api/v1/mail/:address/:mailId", async (req, res) => {
+webServer.get("/api/v1/mail/:address/:mailId", cors(), async (req, res) => {
     try {
         const mailFile = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId), "mail.json");
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
@@ -201,7 +202,7 @@ webServer.get("/api/v1/mail/:address/:mailId", async (req, res) => {
     }
 });
 
-webServer.get("/api/v1/mail/:address/:mailId/attachments", async (req, res) => {
+webServer.get("/api/v1/mail/:address/:mailId/attachments", cors(), async (req, res) => {
     try {
         const mailFile = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId), "mail.json");
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
@@ -213,7 +214,7 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments", async (req, res) => {
     }
 });
 
-webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", async (req, res) => {
+webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", cors(), async (req, res) => {
     try {
         const mailDirectory = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId));
         const mailFile = path.join(mailDirectory, "mail.json");
@@ -237,7 +238,7 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", async (
     }
 });
 
-webServer.delete("/api/v1/mail/:address/:mailId", async (req, res) => {
+webServer.delete("/api/v1/mail/:address/:mailId", cors(), async (req, res) => {
     try {
         const addressDirectory = path.join(config.mailDirectory, sanitize(req.params.address));
         const mailDirectory = path.join(addressDirectory, sanitize(req.params.mailId));
@@ -262,7 +263,7 @@ webServer.delete("/api/v1/mail/:address/:mailId", async (req, res) => {
 });
 
 
-webServer.delete("/api/v1/mail/:address", async (req, res) => {
+webServer.delete("/api/v1/mail/:address", cors(), async (req, res) => {
     try {
         const mailDirectory = path.join(config.mailDirectory, sanitize(req.params.address));
 
