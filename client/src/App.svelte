@@ -21,7 +21,7 @@
         availableDomains = await getDomains();
         selectedDomain = availableDomains.sample();
 
-        selectedUsername = (await getRandomUsername()).username
+        selectedUsername = (await getRandomUsername()).username;
     });
 
     function getSelectedAddress() {
@@ -45,9 +45,9 @@
         mails = mails.filter((m) => m.id !== e.detail.id);
     }
 
-    function handleNewAddressClick(e) {
+    async function handleNewAddressClick(e) {
         mails = [];
-        selectedUsername = generateUsername();
+        selectedUsername = (await getRandomUsername()).username;
         selectedDomain = availableDomains.sample();
     }
 </script>
