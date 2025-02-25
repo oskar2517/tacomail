@@ -1,11 +1,14 @@
 # TacoMail API
 TacoMail provides an API which may be incorporated by third-party developers. This document describes the available routes. All mails will be automatically deleted after one hour.
 
+The base URL for all requests is `https://tacomail.de`.
+
 ## Fetching the contact email address
 Returns the contact email address of this instance.
 ```
 GET /api/v1/contactEmail
 ```
+Expected status: 200
 
 ### Example response
 ```json
@@ -117,7 +120,7 @@ Expected status: 200
 ```
 
 ## Fetching attachments
-Returns with the ID and name of all attachments of a mail. The `present` field indicates whether the attachment can be downloaded. Attachments will only be saved until their total sizes exceeds the configured `maxAttachmentsSize`.
+Returns the ID and name of all attachments of a mail. The `present` field indicates whether the attachment can be downloaded. Attachments will only be saved until their total sizes exceeds the configured `maxAttachmentsSize`.
 ```
 GET /api/v1/mail/:address/:mailId/attachments
 ```
@@ -134,22 +137,22 @@ Expected status: 200
 ]
 ```
 
-## Download an attachment
+## Downloading an attachment
 Downloads a single attachment of a mail. Make sure the `present` field is set to `true`.
 ```
 GET /api/v1/mail/:address/:mailId/attachments/:attachmentId
 ```
 Expected status: 200
 
-## Delete a single mail
+## Deleting a single mail
 Deletes a single mail and its attachments from the server.
 ```
 DELETE /api/v1/mail/:address/:mailId
 ```
 Expected status: 204
 
-## Delete inbox
-Deleted all mails from the inbox.
+## Deleting an entire inbox
+Deletes an entire inbox and all mails inside it.
 ```
 DELETE /api/v1/mail/:address
 ``` 
