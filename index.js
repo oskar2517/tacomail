@@ -4,11 +4,12 @@ import { v4 as uuidv4 } from "uuid";
 import express from "express";
 import path from "path";
 import fs from "fs/promises";
-import config from "./config.json" assert { type: "json" };
 import sanitize from "sanitize-filename";
 import { pathExists } from "path-exists";
 import { generateUsername } from "unique-username-generator";
 import cors from "cors";
+
+const config = JSON.parse((await fs.readFile("config.json")).toString());
 
 function log(message) {
     console.log(message);
