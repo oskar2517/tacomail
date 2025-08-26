@@ -21,7 +21,9 @@ Expected status: 200
 ### Example response
 ```json
 {
-    "expires": 1756229705148
+    "expires": 1756229705148,
+    "username": "axolotl_friend",
+    "domain": "tacomail.de"
 }
 ```
 

@@ -306,7 +306,9 @@ webServer.post("/api/v2/session", async (req, res) => {
     sessions[`${username}@${domain}`] = expires;
 
     res.status(200).json({
-        expires
+        expires,
+        username,
+        domain
     });
 });
 
