@@ -17,5 +17,6 @@
 
     },
     "deletionTimeout": 60,
+    "sessionTimeout": 60,
     "contactEmail": "contact@admin.tacomail.de"
 }

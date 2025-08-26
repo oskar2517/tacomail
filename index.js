@@ -2,14 +2,15 @@ import { SMTPServer } from "smtp-server";
 import { simpleParser } from "mailparser";
 import { v4 as uuidv4 } from "uuid";
 import express from "express";
+import bodyParser from "body-parser";
 import path from "path";
 import fs from "fs/promises";
 import sanitize from "sanitize-filename";
 import { pathExists } from "path-exists";
 import { generateUsername } from "unique-username-generator";
-import cors from "cors";
 
 const config = JSON.parse((await fs.readFile("config.json")).toString());
+const sessions = {};
 
 function log(message) {
     console.log(message);
@@ -47,10 +48,18 @@ setInterval(async () => {
                 await fs.writeFile(manifestFile, JSON.stringify(newManifest));
             }
         }
+
+        for (const address in sessions) {
+            const expiresTime = timestampToMinutes(sessions[address]);
+
+            if (expiresTime - currentTime < 0) {
+                delete sessions[address];
+            }
+        }
     } catch (err) {
         log(err);
     }
-}, 30 * 1000);
+}, 2 * 1000);
 
 const smtpServer = new SMTPServer({
     authOptional: true,
@@ -68,7 +77,11 @@ const smtpServer = new SMTPServer({
                 throw "Sender address missing";
             }
 
-            const addressDirectory = path.join("mails", sanitize(toAddress));
+            if (!sessions[toAddress]) {
+                return callback();
+            }
+
+            const addressDirectory = path.join(config.mailDirectory, sanitize(toAddress));
             await fs.mkdir(addressDirectory, { recursive: true });
 
             const manifestFilePath = path.join(addressDirectory, "manifest.json");
@@ -91,7 +104,7 @@ const smtpServer = new SMTPServer({
             let savedAttachmentsSize = 0;
             for (const a of parsedEmail.attachments) {
                 const attachmentId = uuidv4();
-                const attachmentName = a.filename;
+                const attachmentName = sanitize(a.filename);
 
                 const attachment = {
                     id: attachmentId,
@@ -152,22 +165,23 @@ smtpServer.listen(config.smtpServer.port, () => {
 
 const webServer = express();
 webServer.use(express.static("client/public"));
+webServer.use(bodyParser.json({ limit: "10kb" }));
 
-webServer.get("/api/v1/contactEmail", cors(), (req, res) => {
+webServer.get("/api/v2/contactEmail", (req, res) => {
     res.json({ email: config.contactEmail });
 });
 
-webServer.get("/api/v1/randomUsername", cors(), (req, res) => {
+webServer.get("/api/v2/randomUsername", (req, res) => {
     const username = generateUsername("", 5, 20);
 
     res.json({ username });
 });
 
-webServer.get("/api/v1/domains", cors(), (req, res) => {
+webServer.get("/api/v2/domains", (req, res) => {
     res.json(config.domains);
 });
 
-webServer.get("/api/v1/mail/:address", cors(), async (req, res) => {
+webServer.get("/api/v2/mail/:address", async (req, res) => {
     try {
         let limit = 10;
         if (req.query.limit && !isNaN(parseInt(req.query.limit)) && parseInt(req.query.limit) <= 10) {
@@ -191,7 +205,7 @@ webServer.get("/api/v1/mail/:address", cors(), async (req, res) => {
     }
 });
 
-webServer.get("/api/v1/mail/:address/:mailId", cors(), async (req, res) => {
+webServer.get("/api/v2/mail/:address/:mailId", async (req, res) => {
     try {
         const mailFile = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId), "mail.json");
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
@@ -203,7 +217,7 @@ webServer.get("/api/v1/mail/:address/:mailId", cors(), async (req, res) => {
     }
 });
 
-webServer.get("/api/v1/mail/:address/:mailId/attachments", cors(), async (req, res) => {
+webServer.get("/api/v2/mail/:address/:mailId/attachments", async (req, res) => {
     try {
         const mailFile = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId), "mail.json");
         const mail = JSON.parse((await fs.readFile(mailFile)).toString());
@@ -215,7 +229,7 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments", cors(), async (req, r
     }
 });
 
-webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", cors(), async (req, res) => {
+webServer.get("/api/v2/mail/:address/:mailId/attachments/:attachmentId", async (req, res) => {
     try {
         const mailDirectory = path.join(config.mailDirectory, sanitize(req.params.address), sanitize(req.params.mailId));
         const mailFile = path.join(mailDirectory, "mail.json");
@@ -239,7 +253,7 @@ webServer.get("/api/v1/mail/:address/:mailId/attachments/:attachmentId", cors(),
     }
 });
 
-webServer.delete("/api/v1/mail/:address/:mailId", cors(), async (req, res) => {
+webServer.delete("/api/v2/mail/:address/:mailId", async (req, res) => {
     try {
         const addressDirectory = path.join(config.mailDirectory, sanitize(req.params.address));
         const mailDirectory = path.join(addressDirectory, sanitize(req.params.mailId));
@@ -264,7 +278,7 @@ webServer.delete("/api/v1/mail/:address/:mailId", cors(), async (req, res) => {
 });
 
 
-webServer.delete("/api/v1/mail/:address", cors(), async (req, res) => {
+webServer.delete("/api/v2/mail/:address", async (req, res) => {
     try {
         const mailDirectory = path.join(config.mailDirectory, sanitize(req.params.address));
 
@@ -276,6 +290,38 @@ webServer.delete("/api/v1/mail/:address", cors(), async (req, res) => {
         res.status(404);
         res.end();
     }
+});
+
+webServer.post("/api/v2/session", async (req, res) => {
+    const username = req.body.username;
+    const domain = req.body.domain;
+
+    if (!username || !domain || username.length > 64 || domain.length > 32) {
+        res.status(400).end();
+        return;
+    }
+
+    const expires = Date.now() + 60 * 1000 * config.sessionTimeout;
+
+    sessions[`${username}@${domain}`] = expires;
+
+    res.status(200).json({
+        expires
+    });
+});
+
+webServer.delete("/api/v2/session", async (req, res) => {
+    const username = req.body.username;
+    const domain = req.body.domain;
+
+    if (!username || !domain || username.length > 64 || domain.length > 32) {
+        res.status(400).end();
+        return;
+    }
+
+    delete sessions[`${username}@${domain}`];
+
+    res.status(200).end();
 });
 
 webServer.listen(config.webServer.port, () => {

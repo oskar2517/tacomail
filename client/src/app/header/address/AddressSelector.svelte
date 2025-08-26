@@ -1,4 +1,6 @@
 <script>
+    import { afterUpdate, onMount } from "svelte";
+    import { postSession } from "../../../api";
     import CopyButton from "./CopyButton.svelte";
     import { _ } from "svelte-i18n";
 
@@ -11,7 +13,7 @@
     }
 
     function handleEmailPaste(e) {
-        let text = (event.clipboardData || window.clipboardData).getData("text");
+        let text = (e.clipboardData || window.clipboardData).getData("text");
 
         if (text.includes("@")) {
             e.preventDefault();
@@ -21,6 +23,25 @@
             }
         }
     }
+
+    let sessionCreationTimeout;
+
+    async function updateSession() {
+        if (!username || !domain) return;
+
+        await postSession(username, domain);
+    }
+
+    $: {
+        if (username && domain) {
+            if (sessionCreationTimeout) {
+                clearTimeout(sessionCreationTimeout);
+            }
+            sessionCreationTimeout = setTimeout(updateSession, 2 * 1000);
+        }
+    }
+
+    setInterval(updateSession, 1000 * 60 * 5);
 </script>
 
 <div class="address-selector-wrapper">
@@ -32,6 +53,7 @@
             placeholder={$_("addressSelector.usernamePlaceholder")}
             spellcheck="false"
             bind:value={username}
+            maxlength="64"
         />
         <select class="domain" bind:value={domain}>
             {#each availableDomains as domain}
@@ -93,7 +115,7 @@
             padding: 5px;
         }
 
-        .address-selector-wrapper  {
+        .address-selector-wrapper {
             flex-direction: column;
         }
     }

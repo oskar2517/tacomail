@@ -5,7 +5,7 @@
     import sanitizeHtml from "sanitize-html";
     import { onMount } from "svelte";
     import { _ } from "svelte-i18n";
-    import { deleteMail } from "../../api";
+    import { API_BASE, deleteMail } from "../../api";
 
     export let mail;
 
@@ -80,7 +80,7 @@
     }
 
     function handleViewRawClick(e) {
-        window.open(`/api/v1/mail/${mail.to.address}/${mail.id}`, "_blank");
+        window.open(`${API_BASE}/mail/${mail.to.address}/${mail.id}`, "_blank");
     }
 
     function hashAuthor(address) {
@@ -160,7 +160,7 @@
                             class:present={a.present}
                             class="attachment-url"
                             target="_blank"
-                            href={a.present ? `/api/v1/mail/${mail.to.address}/${mail.id}/attachments/${a.id}` : null }
+                            href={a.present ? `${API_BASE}/mail/${mail.to.address}/${mail.id}/attachments/${a.id}` : null }
                         >
                             {a.fileName}
                         </a>
