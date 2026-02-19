@@ -21,13 +21,10 @@
                     "src",
                     "alt",
                     "title",
-                    "width",
-                    "height",
                     "srcset",
                     "sizes",
                 ],
                 table: [
-                    "width",
                     "border",
                     "cellpadding",
                     "cellspacing",
@@ -40,8 +37,6 @@
                 tfoot: [],
                 tr: ["align", "valign", "bgcolor"],
                 td: [
-                    "width",
-                    "height",
                     "align",
                     "valign",
                     "colspan",
@@ -49,8 +44,6 @@
                     "bgcolor",
                 ],
                 th: [
-                    "width",
-                    "height",
                     "align",
                     "valign",
                     "colspan",
