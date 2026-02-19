@@ -9,13 +9,59 @@
 
     export let mail;
 
-    let mailBodyIFrame;
+    let mailBodySrcDoc;
 
     const dispatch = createEventDispatcher();
 
     function sanitizeHtmlWithConfig(s) {
         return sanitizeHtml(s, {
-            allowedAttributes: false,
+            allowedAttributes: {
+                a: ["href", "title", "target", "rel", "name"],
+                img: [
+                    "src",
+                    "alt",
+                    "title",
+                    "srcset",
+                    "sizes",
+                ],
+                table: [
+                    "border",
+                    "cellpadding",
+                    "cellspacing",
+                    "align",
+                    "bgcolor",
+                    "role",
+                ],
+                tbody: [],
+                thead: [],
+                tfoot: [],
+                tr: ["align", "valign", "bgcolor"],
+                td: [
+                    "align",
+                    "valign",
+                    "colspan",
+                    "rowspan",
+                    "bgcolor",
+                ],
+                th: [
+                    "align",
+                    "valign",
+                    "colspan",
+                    "rowspan",
+                    "bgcolor",
+                ],
+                p: ["align"],
+                div: ["align"],
+                span: ["align"],
+                "*": ["style", "width", "height"],
+            },
+            allowedSchemes: ["http", "https", "mailto"],
+            transformTags: {
+                a: sanitizeHtml.simpleTransform("a", {
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                }),
+            },
             allowedTags: [
                 "a",
                 "b",
@@ -96,30 +142,41 @@
     }
 
     onMount(() => {
-        mailBodyIFrame.contentWindow.document.write('<base target="_parent">');
-        if (mail.body.html !== "") {
-            mailBodyIFrame.contentWindow.document.write(
-                sanitizeHtmlWithConfig(mail.body.html)
-            );
-        } else {
-            mailBodyIFrame.contentWindow.document.write(
-                sanitizeHtmlWithConfig(mail.body.text)
-            );
-        }
+        const content = mail.body.html !== "" ? mail.body.html : mail.body.text;
+
+        mailBodySrcDoc = sanitizeHtmlWithConfig(content);
     });
 </script>
 
 <div class="mail" in:fade={{ duration: 300 }}>
     <div class="action-button-row">
-        <button type="button" class="action-button" on:click={handleGoBackToListClick} title={$_("mailDetails.backToListButton.description")}>
-            <i class="fa-solid fa-angle-left" /> {$_("mailDetails.backToListButton.title")}
+        <button
+            type="button"
+            class="action-button"
+            on:click={handleGoBackToListClick}
+            title={$_("mailDetails.backToListButton.description")}
+        >
+            <i class="fa-solid fa-angle-left" />
+            {$_("mailDetails.backToListButton.title")}
         </button>
         <div class="action-button-row-spacer" />
-        <button type="button" class="action-button" on:click={handleDeleteClick} title={$_("mailDetails.deleteMailButton.description")}>
-            <i class="fa-solid fa-trash-can" /> {$_("mailDetails.deleteMailButton.title")}
+        <button
+            type="button"
+            class="action-button"
+            on:click={handleDeleteClick}
+            title={$_("mailDetails.deleteMailButton.description")}
+        >
+            <i class="fa-solid fa-trash-can" />
+            {$_("mailDetails.deleteMailButton.title")}
         </button>
-        <button type="button" class="action-button" on:click={handleViewRawClick} title={$_("mailDetails.viewMailRawButton.description")}>
-            <i class="fa-solid fa-code" /> {$_("mailDetails.viewMailRawButton.title")}
+        <button
+            type="button"
+            class="action-button"
+            on:click={handleViewRawClick}
+            title={$_("mailDetails.viewMailRawButton.description")}
+        >
+            <i class="fa-solid fa-code" />
+            {$_("mailDetails.viewMailRawButton.title")}
         </button>
     </div>
     <div class="mail-info">
@@ -135,32 +192,42 @@
             </div>
 
             <div class="date">
-                <div class="generic-info-title">{$_("mailDetails.dateTitle")}</div>
+                <div class="generic-info-title">
+                    {$_("mailDetails.dateTitle")}
+                </div>
                 <div class="generic-info-value">
                     {dateFormat(
                         Date.parse(mail.date),
-                        "mmmm dS, yyyy, h:MM:ss TT"
+                        "mmmm dS, yyyy, h:MM:ss TT",
                     )}
                 </div>
             </div>
         </div>
 
         <div class="generic-info">
-            <div class="generic-info-title">{$_("mailDetails.subjectTitle")}:</div>
+            <div class="generic-info-title">
+                {$_("mailDetails.subjectTitle")}:
+            </div>
             <div class="generic-info-value">{mail.subject}</div>
         </div>
 
         {#if mail.attachments.length > 0}
             <div class="generic-info">
-                <div class="generic-info-title">{$_("mailDetails.attachmentsTitle")}:</div>
+                <div class="generic-info-title">
+                    {$_("mailDetails.attachmentsTitle")}:
+                </div>
                 <div class="generic-info-value">
                     {#each mail.attachments as a}
                         <a
-                            title={!a.present ? $_("mailDetails.attachmentUnavailable") : null }
+                            title={!a.present
+                                ? $_("mailDetails.attachmentUnavailable")
+                                : null}
                             class:present={a.present}
                             class="attachment-url"
                             target="_blank"
-                            href={a.present ? `${API_BASE}/mail/${mail.to.address}/${mail.id}/attachments/${a.id}` : null }
+                            href={a.present
+                                ? `${API_BASE}/mail/${mail.to.address}/${mail.id}/attachments/${a.id}`
+                                : null}
                         >
                             {a.fileName}
                         </a>
@@ -171,7 +238,12 @@
     </div>
 
     <div class="mail-body">
-        <iframe title="body" bind:this={mailBodyIFrame} />
+        <iframe
+            sandbox="allow-popups allow-popups-to-escape-sandbox"
+            referrerpolicy="no-referrer"
+            title="body"
+            srcdoc={mailBodySrcDoc}
+        />
     </div>
 </div>
 
@@ -190,7 +262,7 @@
     }
 
     .attachment-url:not(.present) {
-        opacity: .5;
+        opacity: 0.5;
     }
 
     .mail-body {
