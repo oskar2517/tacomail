@@ -246,7 +246,8 @@
 
     <div class="mail-body">
         <iframe
-            sandbox="true"
+            sandbox="allow-popups allow-popups-to-escape-sandbox"
+            referrerpolicy="no-referrer"
             title="body"
             srcdoc={mailBodySrcDoc}
         />
