@@ -1,94 +1,162 @@
 TacoMail Terms of Service
 
 Effective Date: 08/21/2023
+Last Updated: 02/22/2026
 
-Welcome to TacoMail! These terms of service ("Terms") outline the rules and 
-guidelines for using our temporary email service. By accessing or using 
-TacoMail, you agree to abide by these Terms. If you do not agree with these 
-Terms, please refrain from using our services.
+Welcome to TacoMail! These Terms of Service ("Terms") outline the rules
+and guidelines for using our temporary email service. By accessing or
+using TacoMail, you agree to abide by these Terms. If you do not agree
+with these Terms, please refrain from using our services.
 
 1. Service Description
 
-TacoMail is a temporary email service that allows users to create and use 
-temporary email addresses for the purpose of receiving emails anonymously. Each 
-email received on a temporary address will be automatically deleted after one 
-hour.
+TacoMail is a temporary email service that allows users to create and
+use temporary email addresses for the purpose of receiving emails
+anonymously. Each email received on a temporary address will be
+automatically deleted after approximately one (1) hour.
+
+TacoMail is not intended to be used as a secure communication channel
+or permanent storage solution.
 
 2. User Responsibilities
 
-2.1. Users are solely responsible for the content of the emails received and 
-their usage of TacoMail. Any illegal, abusive, harmful, or inappropriate 
-content is strictly prohibited.
+2.1. Users are solely responsible for the content of the emails received
+and their usage of TacoMail.
 
-2.2. Users are prohibited from using TacoMail for any activity that violates 
-local, national, or international laws and regulations.
+2.2. Any illegal, abusive, harmful, fraudulent, or inappropriate use of
+the Service is strictly prohibited. This includes, but is not limited
+to, phishing, impersonation, spam, distribution of malware, harassment,
+or violation of intellectual property rights.
+
+2.3. Users are prohibited from using TacoMail for any activity that
+violates local, national, or international laws and regulations.
+
+2.4. Users must be at least 16 years old to use the Service.
 
 3. Email Storage
 
-3.1. Emails received through TacoMail will be stored unencrypted for the 
-duration of one hour. After this period, the emails will be automatically 
-deleted from our servers.
+3.1. Emails received through TacoMail will be stored unencrypted for the
+duration of approximately one (1) hour. After this period, the emails
+will be automatically deleted from our servers.
 
-3.2. Users understand and acknowledge that emails are stored temporarily and 
-should not be considered a secure or permanent storage solution.
+3.2. Users understand and acknowledge that emails are stored temporarily
+and should not be considered a secure or permanent storage solution.
+
+3.3. TacoMail does not guarantee the confidentiality, integrity, or
+availability of emails received through the Service.
+
+3.4. Users acknowledge that it is theoretically possible for someone to
+access emails received by another user by guessing the username (email
+address) used. Users should therefore avoid easily guessable usernames
+and should not use the Service for sensitive or confidential information.
 
 4. API Developers
 
-4.1. TacoMail offers an API that developers can implement into their tools, 
-applications, or services. By using the TacoMail API, developers agree to 
-comply with these Terms and any additional guidelines provided by TacoMail.
+4.1. TacoMail offers a public API that developers may implement into
+their tools, applications, or services. The API may currently be used
+without API keys.
+
+4.2. TacoMail does not currently enforce rate limits on API usage.
+However, we reserve the right to introduce, modify, or enforce rate
+limits, authentication requirements, access restrictions, or other
+technical limitations at any time in the future without prior notice.
+
+4.3. TacoMail reserves the right to restrict or block API access in
+cases of abuse, excessive usage, or activities that negatively affect
+the stability or availability of the Service.
 
 5. Privacy and Security
 
-5.1. TacoMail does not guarantee the privacy or security of the emails received 
-through its service. Users should avoid sharing sensitive or confidential 
-information through TacoMail.
+5.1. TacoMail does not guarantee the privacy or security of the emails
+received through its service. Users should avoid sharing sensitive or
+confidential information through TacoMail.
 
-5.2. Users acknowledge that it is theoretically possible for someone to access 
-emails received by another user by guessing the username (email address) they 
-used. Therefore, users should exercise caution and avoid using easily guessable 
-usernames.
+5.2. TacoMail may process and store technical data such as IP addresses,
+timestamps, user-agent strings, and API usage metadata for security,
+abuse prevention, and operational purposes, in accordance with
+applicable data protection laws, including the General Data Protection
+Regulation (GDPR), where applicable.
+
+5.3. TacoMail may disclose information where required by applicable law,
+court order, or governmental authority.
 
 6. Reporting Abuse
 
-6.1. Users and third parties can report abuse, violations, or any concerning 
-content related to TacoMail by contacting us at contact@admin.tacomail.de. We 
-will investigate such reports and take appropriate actions as necessary.
+6.1. Users and third parties can report abuse, violations, or any
+concerning content related to TacoMail by contacting us at
+contact@admin.tacomail.de. We will investigate such reports and take
+appropriate actions as necessary.
 
 7. Limitation of Liability
 
-7.1. TacoMail, its creators, and affiliates shall not be held liable for any 
-damages, losses, or liabilities arising from the use of TacoMail, including but 
-not limited to data breaches, unauthorized access, or misuse of the service.
+7.1. TacoMail, its creators, operators, and affiliates shall not be held
+liable for any damages, losses, or liabilities arising from the use of
+TacoMail, including but not limited to data breaches, unauthorized
+access, misuse of the service, missed emails, or service interruptions,
+to the fullest extent permitted under German law.
 
-8. Termination of Service
+7.2. The Service is provided "as is" and "as available" without
+warranties of any kind, whether express or implied.
 
-8.1. TacoMail reserves the right to terminate, suspend, or discontinue the 
-service at any point in the future, with or without prior notice. This may be 
-due to various reasons, including but not limited to changes in business 
-strategies, technological advancements, legal considerations, or unforeseen 
-circumstances.
+8. Indemnification
 
-8.2. In the event of the termination of the service, TacoMail shall not be 
-liable for any losses, damages, or inconveniences incurred by users as a result.
+8.1. Users agree to indemnify and hold harmless TacoMail and its
+operators from any claims, damages, liabilities, or expenses arising
+out of their use or misuse of the Service or violation of these Terms.
 
-9. Changes to Terms
+9. Termination of Service
 
-9.1. TacoMail may update these Terms from time to time without prior notice
-and without notifying its users.
+9.1. TacoMail reserves the right to terminate, suspend, restrict, or
+discontinue the Service at any point in the future, with or without
+prior notice.
 
-10. Availability of Service
+9.2. In the event of the termination of the Service, TacoMail shall not
+be liable for any losses, damages, or inconveniences incurred by users
+as a result.
 
-10.1. TacoMail makes reasonable efforts to maintain the availability of its 
-service, but we do not guarantee uninterrupted access to our platform. Users 
-acknowledge that the service may experience downtime, technical issues, or 
+10. Changes to Terms
+
+10.1. TacoMail may update these Terms from time to time. Updated
+versions will be published on this page.
+
+10.2. Continued use of the Service after changes become effective
+constitutes acceptance of the revised Terms.
+
+11. Availability of Service
+
+11.1. TacoMail makes reasonable efforts to maintain the availability of
+its Service, but we do not guarantee uninterrupted access to our
+platform. The Service may experience downtime, technical issues, or
 interruptions beyond our control.
 
-10.2. TacoMail shall not be held responsible for any losses or damages arising 
-from the unavailability of the service, including but not limited to missed 
-emails, data loss, or disruptions to user activities.
+11.2. TacoMail shall not be held responsible for any losses or damages
+arising from the unavailability of the Service.
 
-By using TacoMail, you acknowledge and agree to these Terms. If you have any 
-questions or concerns, please contact us at contact@admin.tacomail.de.
+12. Governing Law and Jurisdiction
+
+12.1. These Terms shall be governed by and interpreted in accordance
+with the laws of the Federal Republic of Germany.
+
+12.2. If the user is a merchant (Kaufmann), legal entity under public
+law, or special fund under public law, the exclusive place of
+jurisdiction shall be the registered office of TacoMail. Mandatory
+consumer protection laws remain unaffected.
+
+13. Force Majeure
+
+13.1. TacoMail shall not be liable for failure or delay in performance
+due to circumstances beyond its reasonable control, including but not
+limited to natural disasters, cyberattacks, governmental actions,
+infrastructure failures, or hosting provider disruptions.
+
+14. Severability
+
+14.1. If any provision of these Terms is found to be invalid or
+unenforceable, the remaining provisions shall remain in full force and
+effect.
+
+By using TacoMail, you acknowledge and agree to these Terms. If you
+have any questions or concerns, please contact us at
+contact@admin.tacomail.de.
 
 Thank you for choosing TacoMail for your temporary email needs!
