@@ -67,6 +67,7 @@ const smtpServer = new SMTPServer({
     disabledCommands: ["STARTTLS"],
     secure: false,
     async onData(stream, session, callback) {
+        console.log("ok")
         try {
             const id = uuidv4();
 

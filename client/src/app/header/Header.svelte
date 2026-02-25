@@ -2,9 +2,7 @@
     import AddressSelector from "./address/AddressSelector.svelte";
     import Description from "./Description.svelte";
     import Glow from "./stars/Glow.svelte";
-    import Stars1 from "./stars/Stars1.svelte";
-    import Stars2 from "./stars/Stars2.svelte";
-    import Stars3 from "./stars/Stars3.svelte";
+    import Starfield from "./stars/Starfield.svelte";
     import Title from "./Title.svelte";
 
     export let username;
@@ -13,13 +11,15 @@
 </script>
 
 <div class="header">
-    <Stars1 />
-    <Stars2 />
-    <Stars3 />
-    <Glow />
-    <Title />
-    <AddressSelector bind:username bind:domain {availableDomains} />
-    <Description />
+    <div class="background" aria-hidden="true">
+        <Starfield />
+        <Glow />
+    </div>
+    <div class="content">
+        <Title />
+        <AddressSelector bind:username bind:domain {availableDomains} />
+        <Description />
+    </div>
 </div>
 
 <style>
@@ -34,5 +34,17 @@
         );
         user-select: none;
         z-index: 1000;
+    }
+
+    .background {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
     }
 </style>
